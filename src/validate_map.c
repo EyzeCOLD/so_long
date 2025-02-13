@@ -6,95 +6,86 @@
 /*   By: juaho <juaho@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:09:10 by juaho             #+#    #+#             */
-/*   Updated: 2025/02/06 16:51:40 by juaho            ###   ########.fr       */
+/*   Updated: 2025/02/13 14:04:35 by juaho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/so_long.h"
 #include "../libft/libft.h"
 
-static int	how_many_chars_in_map(char map[MAX_H][MAX_W + 2], char c);
-static void	validate_map_chars(char map[MAX_H][MAX_W + 2]);
-static int	validate_map_edge(char map[MAX_H][MAX_W + 2]);
+static int		validate_map_edge(t_map *map);
+static void		validate_chars(t_map *map);
+static size_t	count_chars(t_map *map, char c);
 
-
-void	validate_map(char map[MAX_H][MAX_W + 2])
+void	validate_map(t_map *map)
 {
-	int	row;
-	int	col;
-	int	width;
-
-	width = ft_strlen(map[0]);
-	row = 1;
-	while (row < MAX_H)
-	{
-		col = 0;
-		while (map[row][col])
-		{
-			if (!ft_strchr(VALID_CHARS, map[row][col]))
-				error_exit("Map not rectangular or has empty/invalid chars");
-			col++;
-		}
-		if (col != width)
-			error_exit("Map not rectangular");
-		row++;
-	}
 	if (validate_map_edge(map) < 0)
-		error_exit("Map not walled off");
-	ft_printf("MAP VALIDATION SUCCESFUL\n");
+		free_map_error_exit(map, "map not square or walled in properly");
+	validate_chars(map);
+	validate_winnable(map);
 }
 
-static int	validate_map_edge(char map[MAX_H][MAX_W + 2])
+static int	validate_map_edge(t_map *map)
 {
-	int	row;
-	int	col;
+	size_t	row;
+	size_t	col;
 
+	row = 0;
 	col = 0;
-	while (map[0][col] != '\n')
-		if (map[0][col++] != '1')
+	while (col < map->w)
+		if (map->grid[row][col++] != '1')
 			return (-1);
-	row = 1;
-	while (map[row][0])
+	row++;
+	while (row < map->h - 1)
 	{
-		if (map[row][0] != '1' || map[row][ft_strlen(map[row])] - 1 != '1')
+		if (map->grid[row][0] != '1' || map->grid[row][map->w - 1] != '1')
 			return (-1);
 		row++;
 	}
-	row--;
 	col = 0;
-	while (map[row][col] != '\n')
-		if (map[row][col++] != '1')
+	while (col < map->w)
+		if (map->grid[row][col++] != '1')
 			return (-1);
 	return (0);
 }
 
-static void	validate_map_chars(char map[MAX_H][MAX_W + 2])
+static void	validate_chars(t_map *map)
 {
-	if (how_many_chars_in_map(map, 'P') != 1)
-		error_exit("Map has multiple Player Starts (\'P\')");
-	if (how_many_chars_in_map(map, 'E') != 1)
-		error_exit("Map has multiple Exits (\'E\')");
-	if (how_many_chars_in_map(map, 'C') == 0)
-		error_exit("Map has no collectibles (\'C\')");
+	size_t	row;
+	size_t	col;
+
+	row = 0;
+	while (row < map->h)
+	{
+		col = 0;
+		while (col < map->w)
+			if (ft_strchr(VALID_CHARS, map->grid[row][col++]) == 0)
+				free_map_error_exit(map, "map has invalid characters");
+		row++;
+	}
+	if (count_chars(map, 'P') != 1)
+		free_map_error_exit(map, "map doesn't have exactly 1 player");
+	if (count_chars(map, 'E') != 1)
+		free_map_error_exit(map, "map doesn't have exactly 1 exit");
+	map->collectibles = count_chars(map, 'C');
+	if (map->collectibles == 0)
+		free_map_error_exit(map, "map has no collectibles");
 }
 
-static int how_many_chars_in_map(char map[MAX_H][MAX_W + 2], char c)
+static size_t	count_chars(t_map *map, char c)
 {
-	int	ret;
-	int	row;
-	int	col;
+	size_t	row;
+	size_t	col;
+	size_t	ret;
 
-	ret = 0;
 	row = 0;
-	col = 0;
-	while (map[row])
+	ret = 0;
+	while (row < map->h)
 	{
-		while (map[row][col])
-		{
-			if (map[row][col] == c)
+		col = 0;
+		while (col < map->w)
+			if (map->grid[row][col++] == c)
 				ret++;
-			col++;
-		}
 		row++;
 	}
 	return (ret);

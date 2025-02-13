@@ -6,7 +6,7 @@
 /*   By: juaho <juaho@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:17:43 by juaho             #+#    #+#             */
-/*   Updated: 2025/02/06 15:42:57 by juaho            ###   ########.fr       */
+/*   Updated: 2025/02/13 14:43:11 by juaho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,63 +14,78 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "../libft/libft.h"
-#include "../libft/get_next_line.h"
 #include "../inc/so_long.h"
 
-static void	set_map_to_null(char map[MAX_H][MAX_W + 2])
-{
-	int	x;
-	int	y;
+static void	load_map(char *file, t_map *map);
+static void	get_map_dimensions(t_map *map);
+static void	validate_filename(char *file);
 
-	y = 0;
-	while (y < MAX_H)
-	{
-		x = 0;
-		while (x < MAX_W)
-		{
-			map[y][x++] = '\0';
-		}
-		y++;
-	}
+void	init_map(char *file, t_map *map)
+{
+	validate_filename(file);
+	map->name = file;
+	load_map(file, map);
+	get_map_dimensions(map);
+	validate_map(map);
+	map->exit_open = 0;
 }
 
-static void	load_map(int fd, char map[MAX_H][MAX_W + 2])
+void	free_grid(char **grid)
 {
-	char	*line;
-	int		y;
+	size_t	i;
 
-	y = 0;
-	while (1)
-	{
-		line = get_next_line(fd);
-		if (!line)
-			break;
-		if (line == GNL_ERROR)
-			exit(1);
-		if (ft_strlen(line) > MAX_W + 1)
-		{
-			free(line);
-			error_exit("Map too wide!");
-		}
-		if (y >= MAX_H)
-		{
-			free(line);
-			error_exit("Map too high!");
-		}
-		ft_strlcpy(map[y], line, MAX_W);
-		free(line);
-		y++;
-	}
+	i = 0;
+	while (grid[i])
+		free(grid[i++]);
+	free(grid);
 }
 
-void	init_map(char *file, char map[MAX_H][MAX_W + 2])
+static void	validate_filename(char *file)
 {
-	int	fd;
+	size_t	len;
+
+	if (!file)
+		error_exit("filename NULL");
+	len = ft_strlen(file);
+	if (len < 4 || ft_strncmp(file + len - 4, ".ber", 5))
+		error_exit("map has to be a .ber file");
+}
+
+static void	load_map(char *file, t_map *map)
+{
+	ssize_t	read_ret;
+	char	buf[(MAX_W * (MAX_H + 1)) + 1];
+	int		fd;
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		error_exit("init_map");
-	set_map_to_null(map);
-	load_map(fd, map);
-	validate_map(map);
+		error_exit("load_map: open");
+	ft_bzero(buf, (MAX_W * (MAX_H + 1)) + 1);
+	read_ret = read(fd, buf, (MAX_W * (MAX_H + 1)) + 1);
+	close(fd);
+	if (read_ret < 0)
+		error_exit("load_map: read");
+	if (buf[MAX_W * (MAX_H + 1)] != '\0')
+		error_exit("map too large");
+	if (ft_strnstr(buf, "\n\n", MAX_W * (MAX_H + 1)))
+		error_exit("map has an empty line");
+	map->grid = ft_split(buf, '\n');
+	if (!map->grid)
+		error_exit("load_map: ft_split");
+}
+
+static void	get_map_dimensions(t_map *map)
+{
+	map->w = ft_strlen(map->grid[0]);
+	if (map->w > MAX_W)
+		free_map_error_exit(map, "map too wide");
+	map->h = 0;
+	while (map->grid[map->h])
+	{
+		if (ft_strlen(map->grid[map->h]) != map->w)
+			free_map_error_exit(map, "map width inconsistent");
+		map->h++;
+	}
+	if (map->h > MAX_H)
+		free_map_error_exit(map, "map too tall");
 }
