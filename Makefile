@@ -22,17 +22,6 @@ LIBFT := ./libft/libft.a
 MLX42 := ./MLX42/build/libmlx42.a
 MLX42_FLAGS := -Iinclude -ldl -lglfw -pthread -lm
 
-#  BONUS
-
-BONUS := ./bin/so_long_bonus
-
-BONUS_SRC :=
-BONUS_SRC := $(addprefix $(SRC_DIR), $(BONUS_SRC))
-
-BONUS_OBJ := $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(BONUS_SRC))
-
-BONUS_INC :=
-
 #####  COMPILERS  ##############################################################
 
 CC := cc
