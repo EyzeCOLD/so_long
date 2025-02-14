@@ -14,13 +14,28 @@
 #include "../libft/libft.h"
 #include "../inc/so_long.h"
 
+void	error_close_game(t_game *game)
+{
+	char	*emsg;
+
+	emsg = ft_strjoin("ERROR: ", mlx_strerror(mlx_errno));
+	if (emsg)
+	{
+		ft_putendl_fd(emsg, 2);
+		free(emsg);
+	}
+	close_game(game, 1);
+}
 void	error_exit(char *emsg)
 {
 	char	*string;
 
 	string = ft_strjoin("ERROR: ", emsg);
-	ft_putendl_fd(string, 2);
-	free(string);
+	if (string)
+	{
+		ft_putendl_fd(string, 2);
+		free(string);
+	}
 	exit(1);
 }
 

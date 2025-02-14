@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../inc/so_long.h"
-#include "../libft/libft.h"
 #include "../MLX42/include/MLX42/MLX42.h"
 
 static int	load_images(t_game *game);
@@ -22,15 +21,9 @@ void	init_game(t_game *game, char *map_file)
 	init_map(map_file, game->map);
 	game->mlx = mlx_init(game->map->w * 32, game->map->h * 32, "SO LONG", true);
 	if (!game->mlx)
-	{
-		ft_putstr_fd((char *) mlx_strerror(mlx_errno), 2);
-		close_game(game, 1);
-	}
+		error_close_game(game);
 	if (load_images(game) < 0)
-	{
-		ft_putstr_fd((char *) mlx_strerror(mlx_errno), 2);
-		close_game(game, 1);
-	}
+		error_close_game(game);
 }
 
 void	close_game(t_game *game, int exit_code)

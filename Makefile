@@ -33,31 +33,37 @@ CFLAGS := -Wall -Wextra -Werror
 all: $(MLX42) $(NAME)
 
 $(NAME): $(LIBFT) $(OBJ_DIR) $(OBJ)
-	@mkdir -p bin
+	mkdir -p bin
 	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(MLX42) $(MLX42_FLAGS) -o $@
 
 $(LIBFT): phony
-	@(cd libft && make)
+	(cd libft && make)
 
 $(MLX42): .mlxcloned
 
 .mlxcloned:
 	git clone https://github.com/codam-coding-college/MLX42.git
 	cd MLX42 && cmake -B build && cmake --build build -j4
-	@touch .mlxcloned
+	touch .mlxcloned
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INC)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR):
-	@mkdir -p obj
+	mkdir -p obj
+
+mlxclean:
+	rm -rf ./MLX42 .mlxcloned
+
+libftclean:
+	(cd libft && make fclean)
 
 clean:
-	@rm -rf $(OBJ_DIR) .bonus
+	rm -rf $(OBJ_DIR) .bonus
 
 fclean: clean
-	@rm -rf $(NAME) $(BONUS)
-	@rm -rf bin
+	rm -rf $(NAME) $(BONUS)
+	rm -rf bin
 
 re: fclean all
 
@@ -66,4 +72,4 @@ re: fclean all
 debug: CFLAGS := $(CFLAGS) -g
 debug: all
 
-.PHONY: all clean fclean re debug phony
+.PHONY: all clean fclean mlxclean libftclean re debug phony
