@@ -47,7 +47,7 @@ static void	validate_filename(char *file)
 	if (!file)
 		error_exit("filename NULL");
 	len = ft_strlen(file);
-	if (len < 4 || ft_strncmp(file + len - 4, ".ber", 5))
+	if (len < 5 || ft_strncmp(file + len - 4, ".ber", 5))
 		error_exit("map has to be a .ber file");
 }
 
@@ -59,12 +59,14 @@ static void	load_map(char *file, t_map *map)
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		error_exit("load_map: open");
+		error_exit("failed to open map");
 	ft_bzero(buf, (MAX_W * (MAX_H + 1)) + 1);
 	read_ret = read(fd, buf, (MAX_W * (MAX_H + 1)) + 1);
 	close(fd);
 	if (read_ret < 0)
 		error_exit("load_map: read");
+	if (read_ret < 2)
+		error_exit("invalid map");
 	if (buf[MAX_W * (MAX_H + 1)] != '\0')
 		error_exit("map too large");
 	if (ft_strnstr(buf, "\n\n", MAX_W * (MAX_H + 1)))
