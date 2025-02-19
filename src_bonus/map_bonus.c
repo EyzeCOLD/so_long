@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_map.c                                         :+:      :+:    :+:   */
+/*   map_bonus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juaho <juaho@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:17:43 by juaho             #+#    #+#             */
-/*   Updated: 2025/02/13 14:43:11 by juaho            ###   ########.fr       */
+/*   Updated: 2025/02/19 09:57:18 by juaho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	validate_filename(char *file)
 	if (!file)
 		error_exit("filename NULL");
 	len = ft_strlen(file);
-	if (len < 5 || ft_strncmp(file + len - 4, ".ber", 5))
+	if (len < 4 || ft_strncmp(file + len - 4, ".ber", 5))
 		error_exit("map has to be a .ber file");
 }
 
@@ -59,21 +59,19 @@ static void	load_map(char *file, t_map *map)
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		error_exit("could not open map");
+		error_exit("load_map: open");
 	ft_bzero(buf, (MAX_W * (MAX_H + 1)) + 1);
 	read_ret = read(fd, buf, (MAX_W * (MAX_H + 1)) + 1);
 	close(fd);
 	if (read_ret < 0)
-		error_exit("could not read map");
+		error_exit("load_map: read");
 	if (buf[MAX_W * (MAX_H + 1)] != '\0')
 		error_exit("map too large");
-	if (*buf == '\n' || ft_strnstr(buf, "\n\n", MAX_W * (MAX_H + 1)))
+	if (ft_strnstr(buf, "\n\n", MAX_W * (MAX_H + 1)))
 		error_exit("map has an empty line");
 	map->grid = ft_split(buf, '\n');
 	if (!map->grid)
-		error_exit("ft_split failed");
-	if (!map->grid[0])
-		error_exit("empty map");
+		error_exit("load_map: ft_split");
 }
 
 static void	get_map_dimensions(t_map *map)
