@@ -33,6 +33,7 @@ void	free_map_error_exit(t_map *map, char *emsg)
 void	error_close_game(t_game *game, char *emsg)
 {
 	char	*string;
+
 	if (!emsg)
 		ft_putstr_fd((char *) mlx_strerror(mlx_errno), 2);
 	else
