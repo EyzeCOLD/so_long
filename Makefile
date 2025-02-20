@@ -14,23 +14,6 @@ OBJ := $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC))
 
 INC := ./inc/so_long.h
 
-#BONUS--------------------------------------------------------------------------
-BONUS := ./bin/so_long_bonus
-
-BONUS_SRC_DIR := ./src_bonus/
-BONUS_SRC := \
-	draw_map_bonus.c		error_bonus.c				\
-	game_bonus.c			map_bonus.c					\
-	main_bonus.c			move_player_bonus.c			\
-	validate_map_bonus.c	validate_winnable_bonus.c	\
-	load_animation_bonus.c
-BONUS_SRC := $(addprefix $(BONUS_SRC_DIR), $(BONUS_SRC))
-
-BONUS_OBJ_DIR := ./obj_bonus/
-BONUS_OBJ := $(patsubst $(BONUS_SRC_DIR)%.c, $(BONUS_OBJ_DIR)%.o, $(BONUS_SRC))
-
-BONUS_INC := ./inc/so_long_bonus.h
-
 #LIBFT- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 LIBFT := ./libft/libft.a
 
@@ -58,19 +41,6 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INC)
 $(OBJ_DIR):
 	@mkdir -p obj
 
-#BONUS--------------------------------------------------------------------------
-bonus: $(MLX42) $(BONUS)
-
-$(BONUS): $(LIBFT) $(BONUS_OBJ_DIR) $(BONUS_OBJ)
-	@mkdir -p bin
-	$(CC) $(CFLAGS) $(BONUS_OBJ) $(LIBFT) $(MLX42) $(MLX42_FLAGS) -o $@
-
-$(BONUS_OBJ_DIR)%.o: $(BONUS_SRC_DIR)%.c $(BONUS_INC)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-$(BONUS_OBJ_DIR):
-	@mkdir -p obj_bonus
-
 #LIBFT- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 $(LIBFT): phony
 	@(cd libft && make)
@@ -85,10 +55,10 @@ $(MLX42): .mlxcloned
 
 #CLEANUP------------------------------------------------------------------------
 clean:
-	@rm -rf $(OBJ_DIR) $(BONUS_OBJ_DIR) .bonus
+	@rm -rf $(OBJ_DIR)
 
 fclean: clean
-	@rm -rf $(NAME) $(BONUS)
+	@rm -rf $(NAME)
 	@rm -rf bin
 
 re: fclean all
@@ -97,7 +67,4 @@ re: fclean all
 debug: CFLAGS := $(CFLAGS) -g
 debug: all
 
-debugb: CFLAGS := $(CFLAGS) -g
-debugb: bonus
-
-.PHONY: all clean fclean re debug phony bonus debugb
+.PHONY: all clean fclean re debug phony

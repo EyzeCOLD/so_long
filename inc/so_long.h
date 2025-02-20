@@ -64,5 +64,6 @@ void	move_player(t_game *game, int x, int y);
 //////////////////////////////////////////////////////////////////// error.c //
 void	error_exit(char *emsg);
 void	free_map_error_exit(t_map *map, char *emsg);
+void	error_close_game(t_game *game, char *emsg);
 
 #endif
