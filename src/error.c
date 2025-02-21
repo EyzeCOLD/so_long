@@ -6,7 +6,7 @@
 /*   By: juaho <juaho@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 10:48:27 by juaho             #+#    #+#             */
-/*   Updated: 2025/02/12 11:13:33 by juaho            ###   ########.fr       */
+/*   Updated: 2025/02/21 11:18:11 by juaho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,19 @@ void	free_map_error_exit(t_map *map, char *emsg)
 {
 	free_grid(map->grid);
 	error_exit(emsg);
+}
+
+void	error_close_game(t_game *game, char *emsg)
+{
+	char	*string;
+
+	if (!emsg)
+		ft_putstr_fd((char *) mlx_strerror(mlx_errno), 2);
+	else
+	{
+		string = ft_strjoin("ERROR: ", emsg);
+		ft_putendl_fd(string, 2);
+		free(string);
+	}
+	close_game(game, 1);
 }

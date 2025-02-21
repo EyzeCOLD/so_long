@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   move_player.c                                      :+:      :+:    :+:   */
+/*   move_player_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juaho <juaho@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 12:30:39 by juaho             #+#    #+#             */
-/*   Updated: 2025/02/13 14:17:28 by juaho            ###   ########.fr       */
+/*   Updated: 2025/02/21 10:22:47 by juaho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/so_long.h"
+#include "../MLX42/include/MLX42/MLX42.h"
+#include "../inc/so_long_bonus.h"
 #include "../libft/libft.h"
 
+static void	update_moves(t_game *game);
 static void	collect(t_game *game, t_coord *coord);
 static void	open_exit(t_game *game);
 static void	win_game(t_game *game);
 
 void	move_player(t_game *game, int x, int y)
 {
-	static size_t	moves;
 	t_coord			dest;
 	char			c;
 
@@ -28,38 +29,43 @@ void	move_player(t_game *game, int x, int y)
 	c = game->map->grid[dest.y][dest.x];
 	if (c == '1')
 		return ;
-	moves++;
-	ft_printf("Moves: %u\n", moves);
+	move_anim(game->player, &game->map->p_pos, x, y);
+	game->moves++;
+	update_moves(game);
 	game->map->p_pos.x += x;
 	game->map->p_pos.y += y;
-	game->player->instances[0].x += x * 32;
-	game->player->instances[0].y += y * 32;
 	if (c == 'C')
 		collect(game, &dest);
 	else if (c == 'E' && game->map->exit_open)
 		win_game(game);
+	else if (c == 'O')
+		player_collision(game);
+}
+
+static void	update_moves(t_game *game)
+{
+	char	*num;
+	char	*str;
+
+	num = ft_itoa(game->moves);
+	if (!num)
+		error_close_game(game, "malloc");
+	str = ft_strjoin("Moves: ", num);
+	if (!str)
+		error_close_game(game, "malloc");
+	free(num);
+	game->movecounter->enabled = 0;
+	mlx_delete_image(game->mlx, game->movecounter);
+	game->movecounter = mlx_put_string(game->mlx, str, 8, 2);
 }
 
 static void	collect(t_game *game, t_coord *coord)
 {
-	t_coord	instance;
-	size_t	i;
-
-	i = 0;
-	while (i < game->collect->count)
-	{
-		instance.x = game->collect->instances[i].x / 32;
-		instance.y = game->collect->instances[i].y / 32;
-		if (instance.x == coord->x && instance.y == coord->y)
-		{
-			game->map->grid[coord->y][coord->x] = '0';
-			game->collect->instances[i].enabled = false;
-			game->map->collectibles--;
-			if (game->map->collectibles == 0)
-				open_exit(game);
-		}
-		i++;
-	}
+	hide_anim_instance(game->collect, coord);
+	game->map->grid[coord->y][coord->x] = '0';
+	game->map->collectibles--;
+	if (game->map->collectibles == 0)
+		open_exit(game);
 }
 
 static void	open_exit(t_game *game)

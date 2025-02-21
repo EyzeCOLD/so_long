@@ -23,7 +23,8 @@ BONUS_SRC := \
 	game_bonus.c			map_bonus.c					\
 	main_bonus.c			move_player_bonus.c			\
 	validate_map_bonus.c	validate_winnable_bonus.c	\
-	load_animation_bonus.c
+	animation_bonus.c		animation_utils_bonus.c		\
+	hooks_bonus.c			enemy_bonus.c
 BONUS_SRC := $(addprefix $(BONUS_SRC_DIR), $(BONUS_SRC))
 
 BONUS_OBJ_DIR := ./obj_bonus/
@@ -92,6 +93,8 @@ fclean: clean
 	@rm -rf bin
 
 re: fclean all
+
+reb: fclean bonus
 
 #DEBUG--------------------------------------------------------------------------
 debug: CFLAGS := $(CFLAGS) -g

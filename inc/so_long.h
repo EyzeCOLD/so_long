@@ -6,7 +6,7 @@
 /*   By: juaho <juaho@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 10:40:17 by juaho             #+#    #+#             */
-/*   Updated: 2025/02/13 14:12:42 by juaho            ###   ########.fr       */
+/*   Updated: 2025/02/20 12:11:36 by juaho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,6 @@ void	move_player(t_game *game, int x, int y);
 //////////////////////////////////////////////////////////////////// error.c //
 void	error_exit(char *emsg);
 void	free_map_error_exit(t_map *map, char *emsg);
+void	error_close_game(t_game *game, char *emsg);
 
 #endif

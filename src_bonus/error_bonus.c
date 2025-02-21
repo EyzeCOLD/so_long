@@ -6,13 +6,13 @@
 /*   By: juaho <juaho@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 10:48:27 by juaho             #+#    #+#             */
-/*   Updated: 2025/02/19 10:03:39 by juaho            ###   ########.fr       */
+/*   Updated: 2025/02/21 11:15:58 by juaho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "../libft/libft.h"
-#include "../inc/so_long.h"
+#include "../inc/so_long_bonus.h"
 
 void	error_exit(char *emsg)
 {
@@ -33,6 +33,7 @@ void	free_map_error_exit(t_map *map, char *emsg)
 void	error_close_game(t_game *game, char *emsg)
 {
 	char	*string;
+
 	if (!emsg)
 		ft_putstr_fd((char *) mlx_strerror(mlx_errno), 2);
 	else

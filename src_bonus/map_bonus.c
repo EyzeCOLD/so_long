@@ -6,7 +6,7 @@
 /*   By: juaho <juaho@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:17:43 by juaho             #+#    #+#             */
-/*   Updated: 2025/02/19 09:57:18 by juaho            ###   ########.fr       */
+/*   Updated: 2025/02/20 15:54:01 by juaho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "../libft/libft.h"
-#include "../inc/so_long.h"
+#include "../inc/so_long_bonus.h"
 
 static void	load_map(char *file, t_map *map);
 static void	get_map_dimensions(t_map *map);

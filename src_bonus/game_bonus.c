@@ -6,7 +6,7 @@
 /*   By: juaho <juaho@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:08:12 by juaho             #+#    #+#             */
-/*   Updated: 2025/02/19 13:49:17 by juaho            ###   ########.fr       */
+/*   Updated: 2025/02/20 15:44:58 by juaho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ void	init_game(t_game *game, char *map_file)
 		error_close_game(game, NULL);
 	if (load_images(game) < 0)
 		error_close_game(game, NULL);
-	if (load_sprite_sheet("./sprites/drop.png", game->mlx, &(game->anim1)) < 0)
-		error_close_game(game, NULL);
+	game->moves = 0;
 }
 
 void	close_game(t_game *game, int exit_code)
 {
-	if (game->anim1)
-		free_anim(game->anim1);
+	free_anim(game->player);
+	free_anim(game->collect);
+	free_anim(game->enemy);
 	mlx_terminate(game->mlx);
 	free_grid(game->map->grid);
 	exit(exit_code);
@@ -39,17 +39,21 @@ void	close_game(t_game *game, int exit_code)
 
 static int	load_images(t_game *game)
 {
-	if (load_image("./sprites/player.png", &game->player, game->mlx) < 0)
-		return (-1);
 	if (load_image("./sprites/exit.png", &game->exit, game->mlx) < 0)
 		return (-1);
 	if (load_image("./sprites/exit2.png", &game->exit2, game->mlx) < 0)
 		return (-1);
-	if (load_image("./sprites/wall.png", &game->wall, game->mlx) < 0)
+	if (load_image("./sprites/wall_bonus.png", &game->wall, game->mlx) < 0)
 		return (-1);
-	if (load_image("./sprites/floor.png", &game->floor, game->mlx) < 0)
+	if (load_image("./sprites/floor_bonus.png", &game->floor, game->mlx) < 0)
 		return (-1);
-	if (load_image("./sprites/collectible.png", &game->collect, game->mlx) < 0)
+	if (load_anim("./sprites/flame_bonus.png", game->mlx, &game->player) < 0)
+		return (-1);
+	if (load_anim("./sprites/drop_bonus.png", game->mlx, &game->enemy) < 0)
+		return (-1);
+	if (load_anim("./sprites/candle_bonus.png", game->mlx, &game->collect) < 0)
+		return (-1);
+	if (load_anim("./sprites/drop_bonus.png", game->mlx, &game->enemy) < 0)
 		return (-1);
 	return (0);
 }

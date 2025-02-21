@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   hooks_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juaho <juaho@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/04 12:23:42 by juaho             #+#    #+#             */
-/*   Updated: 2025/02/21 11:22:22 by juaho            ###   ########.fr       */
+/*   Created: 2025/02/20 12:13:49 by juaho             #+#    #+#             */
+/*   Updated: 2025/02/21 10:22:47 by juaho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/so_long.h"
-#include "../libft/libft.h"
 #include "../MLX42/include/MLX42/MLX42.h"
+#include "../inc/so_long_bonus.h"
 
-static void	close_hook(void *param)
+static void	update_animation(t_anim *anim, mlx_t *mlx);
+
+void	close_hook(void *param)
 {
 	t_game	*game;
 
@@ -22,7 +23,7 @@ static void	close_hook(void *param)
 	close_game(game, 0);
 }
 
-static void	input_keyhook(mlx_key_data_t keydata, void *param)
+void	input_keyhook(mlx_key_data_t keydata, void *param)
 {
 	t_game	*game;
 
@@ -39,22 +40,35 @@ static void	input_keyhook(mlx_key_data_t keydata, void *param)
 		move_player(game, 0, 1);
 }
 
-int	main(int argc, char **argv)
+void	animation_hook(void *param)
 {
-	t_map	map;
-	t_game	game;
+	t_game	*game;
 
-	if (argc != 2)
+	game = param;
+	if (game->player->enabled)
+		update_animation(game->player, game->mlx);
+	if (game->collect->enabled)
+		update_animation(game->collect, game->mlx);
+	if (game->enemy->enabled)
+		update_animation(game->enemy, game->mlx);
+}
+
+void	enemy_hook(void *param)
+{
+	t_game	*game;
+
+	game = param;
+	update_enemies(game);
+}
+
+static inline void	update_animation(t_anim *anim, mlx_t *mlx)
+{
+	anim->accumulator += mlx->delta_time;
+	if (anim->accumulator >= FRAME_TIME)
 	{
-		ft_printf("No map");
-		return (1);
+		anim->frames[anim->frame_index]->enabled = 0;
+		anim->frame_index = (anim->frame_index + 1) % anim->frame_count;
+		anim->frames[anim->frame_index]->enabled = 1;
+		anim->accumulator -= FRAME_TIME;
 	}
-	game.map = &map;
-	init_game(&game, argv[1]);
-	draw_map(&game);
-	mlx_close_hook(game.mlx, &close_hook, &game);
-	mlx_key_hook(game.mlx, &input_keyhook, &game);
-	mlx_loop(game.mlx);
-	close_game(&game, 0);
-	return (1);
 }

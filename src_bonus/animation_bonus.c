@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   load_animation_bonus.c                             :+:      :+:    :+:   */
+/*   animation_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juaho <juaho@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:37:54 by juaho             #+#    #+#             */
-/*   Updated: 2025/02/19 12:12:23 by juaho            ###   ########.fr       */
+/*   Updated: 2025/02/21 11:15:38 by juaho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static t_anim	*tex_to_anim(mlx_texture_t *tex, mlx_t *mlx);
 static void		slice_tex(mlx_texture_t *tex, mlx_image_t *img, size_t x);
 static t_anim	*new_anim(size_t frame_count, mlx_t *mlx);
 
-int	load_sprite_sheet(char *filename, mlx_t *mlx, t_anim **anim)
+int	load_anim(char *filename, mlx_t *mlx, t_anim **anim)
 {
 	mlx_texture_t	*tex;
 
@@ -57,10 +57,9 @@ static t_anim	*tex_to_anim(mlx_texture_t *tex, mlx_t *mlx)
 
 static void	slice_tex(mlx_texture_t *tex, mlx_image_t *img, size_t x)
 {
-	const size_t	tex_vol = tex->width * tex->height * 4;
-	t_coord 		i;
-	size_t			i_pix;
-	size_t			t_pix;
+	t_coord	i;
+	size_t	i_pix;
+	size_t	t_pix;
 
 	i.y = 0;
 	while (i.y < 32)
@@ -95,6 +94,7 @@ static t_anim	*new_anim(size_t frame_count, mlx_t *mlx)
 	anim->frame_count = frame_count;
 	anim->frame_index = 0;
 	anim->accumulator = 0;
+	anim->enabled = 1;
 	return (anim);
 }
 
@@ -102,6 +102,8 @@ void	free_anim(t_anim *anim)
 {
 	size_t	i;
 
+	if (!anim)
+		return ;
 	i = 0;
 	while (i < anim->frame_count)
 	{

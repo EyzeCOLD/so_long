@@ -6,7 +6,7 @@
 /*   By: juaho <juaho@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 10:40:17 by juaho             #+#    #+#             */
-/*   Updated: 2025/02/19 11:24:21 by juaho            ###   ########.fr       */
+/*   Updated: 2025/02/21 10:38:50 by juaho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 # define SO_LONG_BONUS_H
 # define MAX_H 30
 # define MAX_W 40
-# define VALID_CHARS "01CEP\n"
+# define FRAME_TIME 0.2
+# define ENEMY_TIME 1.6
+# define VALID_CHARS "01CEPO\n"
 # include <stdlib.h>
 # include "../MLX42/include/MLX42/MLX42.h"
 
@@ -37,6 +39,7 @@ typedef struct s_map
 
 typedef struct s_anim
 {
+	int			enabled;
 	mlx_t		*mlx;
 	mlx_image_t	**frames;
 	size_t		frame_count;
@@ -46,15 +49,17 @@ typedef struct s_anim
 
 typedef struct s_game
 {
+	size_t		moves;
 	t_map		*map;
 	mlx_t		*mlx;
 	mlx_image_t	*exit;
 	mlx_image_t	*exit2;
-	mlx_image_t	*player;
-	mlx_image_t	*collect;
 	mlx_image_t	*wall;
 	mlx_image_t	*floor;
-	t_anim		*anim1;
+	mlx_image_t	*movecounter;
+	t_anim		*player;
+	t_anim		*collect;
+	t_anim		*enemy;
 }	t_game;
 
 /////////////////////////////////////////////////////////////// game_bonus.c //
@@ -76,7 +81,19 @@ void	error_exit(char *emsg);
 void	free_map_error_exit(t_map *map, char *emsg);
 void	error_close_game(t_game *game, char *emsg);
 ///////////////////////////////////////////////////// load_animation_bonus.c //
-int		load_sprite_sheet(char *filename, mlx_t *mlx, t_anim **anim);
+int		load_anim(char *filename, mlx_t *mlx, t_anim **anim);
 void	free_anim(t_anim *anim);
+//////////////////////////////////////////////////// animation_utils_bonus.c //
+int		anim_to_window(mlx_t *mlx, t_anim *anim, size_t x, size_t y);
+void	move_anim(t_anim *anim, t_coord *coord, int x, int y);
+void	hide_anim_instance(t_anim *anim, t_coord *coord);
+////////////////////////////////////////////////////////////// hooks_bonus.c //
+void	close_hook(void *param);
+void	input_keyhook(mlx_key_data_t keydata, void *param);
+void	animation_hook(void *param);
+void	enemy_hook(void *param);
+////////////////////////////////////////////////////////////// enemy_bonus.c //
+void	update_enemies(t_game *game);
+void	player_collision(t_game *game);
 
 #endif
