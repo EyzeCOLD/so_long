@@ -6,7 +6,7 @@
 /*   By: juaho <juaho@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:55:56 by juaho             #+#    #+#             */
-/*   Updated: 2025/02/21 11:39:26 by juaho            ###   ########.fr       */
+/*   Updated: 2025/02/21 12:39:58 by juaho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	randomize_direction(t_map *map, t_coord *pos, t_coord *dest)
 	size_t	try_again;
 
 	dir = rand() % 4;
-	try_again = 3;
+	try_again = 4;
 	while (try_again--)
 	{
 		dest->x = pos->x;

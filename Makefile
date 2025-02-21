@@ -73,7 +73,7 @@ $(BONUS_OBJ_DIR):
 	@mkdir -p obj_bonus
 
 #LIBFT- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-$(LIBFT): phony
+$(LIBFT):
 	@(cd libft && make)
 
 #MLX42- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -103,4 +103,4 @@ debug: all
 debugb: CFLAGS := $(CFLAGS) -g
 debugb: bonus
 
-.PHONY: all clean fclean re debug phony bonus debugb
+.PHONY: all clean fclean re debug phony bonus reb debugb
