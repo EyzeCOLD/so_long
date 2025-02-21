@@ -24,7 +24,8 @@ BONUS_SRC := \
 	main_bonus.c			move_player_bonus.c			\
 	validate_map_bonus.c	validate_winnable_bonus.c	\
 	animation_bonus.c		animation_utils_bonus.c		\
-	hooks_bonus.c			enemy_bonus.c
+	hooks_bonus.c			enemy_bonus.c				\
+	darkness_bonus.c
 BONUS_SRC := $(addprefix $(BONUS_SRC_DIR), $(BONUS_SRC))
 
 BONUS_OBJ_DIR := ./obj_bonus/

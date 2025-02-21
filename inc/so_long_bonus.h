@@ -6,7 +6,7 @@
 /*   By: juaho <juaho@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 10:40:17 by juaho             #+#    #+#             */
-/*   Updated: 2025/02/21 10:38:50 by juaho            ###   ########.fr       */
+/*   Updated: 2025/02/21 15:23:24 by juaho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,15 @@ typedef struct s_game
 	mlx_image_t	*wall;
 	mlx_image_t	*floor;
 	mlx_image_t	*movecounter;
+	int			nightmode;
+	mlx_image_t	*darkness;
 	t_anim		*player;
 	t_anim		*collect;
 	t_anim		*enemy;
 }	t_game;
 
 /////////////////////////////////////////////////////////////// game_bonus.c //
-void	init_game(t_game *game, char *map_file);
+void	init_game(t_game *game, char *map_file, int nightmode);
 void	close_game(t_game *game, int exit_code);
 //////////////////////////////////////////////////////////////// map_bonus.c //
 void	init_map(char *file, t_map *map);
@@ -95,5 +97,8 @@ void	enemy_hook(void *param);
 ////////////////////////////////////////////////////////////// enemy_bonus.c //
 void	update_enemies(t_game *game);
 void	player_collision(t_game *game);
+/////////////////////////////////////////////////////////// darknesS_bonus.c //
+void	init_darkness(t_game *game);
+void	update_darkness(t_game *game);
 
 #endif

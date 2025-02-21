@@ -6,7 +6,7 @@
 /*   By: juaho <juaho@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 12:30:39 by juaho             #+#    #+#             */
-/*   Updated: 2025/02/21 10:22:47 by juaho            ###   ########.fr       */
+/*   Updated: 2025/02/21 15:38:22 by juaho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	move_player(t_game *game, int x, int y)
 		win_game(game);
 	else if (c == 'O')
 		player_collision(game);
+	if (game->nightmode)
+		update_darkness(game);
 }
 
 static void	update_moves(t_game *game)

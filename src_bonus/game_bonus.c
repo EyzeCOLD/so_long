@@ -6,7 +6,7 @@
 /*   By: juaho <juaho@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:08:12 by juaho             #+#    #+#             */
-/*   Updated: 2025/02/20 15:44:58 by juaho            ###   ########.fr       */
+/*   Updated: 2025/02/21 15:23:39 by juaho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 static int	load_images(t_game *game);
 static int	load_image(char *filename, mlx_image_t **img, mlx_t *mlx);
 
-void	init_game(t_game *game, char *map_file)
+void	init_game(t_game *game, char *map_file, int nightmode)
 {
 	init_map(map_file, game->map);
 	game->mlx = mlx_init(game->map->w * 32, game->map->h * 32, "SO LONG", true);
@@ -25,6 +25,7 @@ void	init_game(t_game *game, char *map_file)
 	if (load_images(game) < 0)
 		error_close_game(game, NULL);
 	game->moves = 0;
+	game->nightmode = nightmode;
 }
 
 void	close_game(t_game *game, int exit_code)

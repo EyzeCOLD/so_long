@@ -6,7 +6,7 @@
 /*   By: juaho <juaho@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:03:43 by juaho             #+#    #+#             */
-/*   Updated: 2025/02/21 11:17:27 by juaho            ###   ########.fr       */
+/*   Updated: 2025/02/21 15:38:00 by juaho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ void	draw_map(t_game *game)
 {
 	draw_bg(game);
 	draw_objects(game);
+	if (game->nightmode)
+	{
+		init_darkness(game);
+		if (mlx_image_to_window(game->mlx, game->darkness, 0, 0) < 0)
+			error_close_game(game, NULL);
+	}
 	game->movecounter = mlx_put_string(game->mlx, "Moves: 0", 8, 2);
 	if (!game->movecounter)
 		error_close_game(game, NULL);
