@@ -43,8 +43,7 @@ MLX42_FLAGS := -Iinclude -ldl -lglfw -pthread -lm
 #####  COMPILERS  ##############################################################
 
 CC := cc
-
-CFLAGS := -Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra -Werror -Ofast
 
 #####  RULES  ##################################################################
 
