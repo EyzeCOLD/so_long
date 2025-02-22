@@ -25,6 +25,7 @@ void	init_game(t_game *game, char *map_file, int nightmode)
 	if (load_images(game) < 0)
 		error_close_game(game, NULL);
 	game->moves = 0;
+	game->darkness = NULL;
 	game->nightmode = nightmode;
 }
 

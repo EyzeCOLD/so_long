@@ -73,7 +73,7 @@ static void	load_map(char *file, t_map *map)
 	if (!map->grid)
 		error_exit("ft_split failed");
 	if (!map->grid[0])
-		error_exit("empty map");
+		free_map_error_exit(map, "empty map");
 }
 
 static void	get_map_dimensions(t_map *map)

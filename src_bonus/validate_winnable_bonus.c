@@ -21,14 +21,14 @@ static void		find_player(t_map *map);
 void	validate_winnable(t_map *map)
 {
 	size_t	path_finder_ret;
-	char	**grid_cpy;
+	char	**grid_copy;
 
-	grid_cpy = copy_grid(map);
-	if (!grid_cpy)
-		free_map_error_exit(map, "copy_grid failed");
+	grid_copy = copy_grid(map);
+	if (!grid_copy)
+		free_map_error_exit(map, "validate_winnable: copy_grid");
 	find_player(map);
-	path_finder_ret = path_finder(map->p_pos.x, map->p_pos.y, grid_cpy);
-	free_grid(grid_cpy);
+	path_finder_ret = path_finder(map->p_pos.x, map->p_pos.y, grid_copy);
+	free_grid(grid_copy);
 	if (path_finder_ret % 10 == 0)
 		free_map_error_exit(map, "exit out of reach");
 	if (path_finder_ret / 10 != map->collectibles)
@@ -57,23 +57,23 @@ static void	find_player(t_map *map)
 static char	**copy_grid(t_map *map)
 {
 	size_t	i;
-	char	**map_grid;
+	char	**grid_copy;
 
-	map_grid = (char **) ft_calloc(sizeof(char *), map->h + 1);
-	if (!map_grid)
+	grid_copy = (char **) ft_calloc(sizeof(char *), map->h + 1);
+	if (!grid_copy)
 		return (NULL);
 	i = 0;
 	while (i < map->h)
 	{
-		map_grid[i] = ft_strdup(map->grid[i]);
-		if (!map_grid[i])
+		grid_copy[i] = ft_strdup(map->grid[i]);
+		if (!grid_copy[i])
 		{
-			free_grid(map_grid);
+			free_grid(grid_copy);
 			return (NULL);
 		}
 		i++;
 	}
-	return (map_grid);
+	return (grid_copy);
 }
 
 static size_t	path_finder(int x, int y, char **map_grid)
