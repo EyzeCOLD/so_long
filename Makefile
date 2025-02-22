@@ -73,7 +73,7 @@ $(BONUS_OBJ_DIR):
 	@mkdir -p obj_bonus
 
 #LIBFT- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-$(LIBFT):
+$(LIBFT): phony
 	@(cd libft && make)
 
 #MLX42- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -87,9 +87,11 @@ $(MLX42): .mlxcloned
 #CLEANUP------------------------------------------------------------------------
 clean:
 	@rm -rf $(OBJ_DIR) $(BONUS_OBJ_DIR) .bonus
+	@(cd libft && make clean)
 
 fclean: clean
-	@rm -rf $(NAME) $(BONUS)
+	@rm -rf $(NAME) $(BONUS) .mlxcloned ./MLX42
+	@(cd libft && make fclean)
 	@rm -rf bin
 
 re: fclean all

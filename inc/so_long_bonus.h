@@ -12,8 +12,8 @@
 
 #ifndef SO_LONG_BONUS_H
 # define SO_LONG_BONUS_H
-# define MAX_H 30
-# define MAX_W 40
+# define MAX_H 67
+# define MAX_W 120
 # define FRAME_TIME 0.2
 # define ENEMY_TIME 1.6
 # define VALID_CHARS "01CEPO\n"

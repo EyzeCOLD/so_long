@@ -100,16 +100,9 @@ static t_anim	*new_anim(size_t frame_count, mlx_t *mlx)
 
 void	free_anim(t_anim *anim)
 {
-	size_t	i;
-
-	if (!anim)
-		return ;
-	i = 0;
-	while (i < anim->frame_count)
+	if (anim)
 	{
-		if (anim->frames[i])
-			mlx_delete_image(anim->mlx, anim->frames[i]);
-		i++;
+		free(anim->frames);
+		free(anim);
 	}
-	free(anim);
 }

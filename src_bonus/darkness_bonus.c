@@ -12,6 +12,7 @@
 
 #include "../MLX42/include/MLX42/MLX42.h"
 #include "../inc/so_long_bonus.h"
+#include "../libft/libft.h"
 #include <math.h>
 
 static void		shade_pixel(unsigned char *pixel, size_t dist);
@@ -57,8 +58,8 @@ static size_t	measure_distance(int x1, int x2, int y1, int y2)
 	int	a;
 	int	b;
 
-	a = pow(abs(x1 - x2), 2);
-	b = pow(abs(y1 - y2), 2);
+	a = pow(ft_abs(x1 - x2), 2);
+	b = pow(ft_abs(y1 - y2), 2);
 	return (sqrt(a + b));
 }
 

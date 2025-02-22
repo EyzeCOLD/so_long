@@ -19,7 +19,7 @@ static int	load_image(char *filename, mlx_image_t **img, mlx_t *mlx);
 void	init_game(t_game *game, char *map_file, int nightmode)
 {
 	init_map(map_file, game->map);
-	game->mlx = mlx_init(game->map->w * 32, game->map->h * 32, "SO LONG", true);
+	game->mlx = mlx_init(game->map->w * 32, game->map->h * 32, "SO LONG", 0);
 	if (!game->mlx)
 		error_close_game(game, NULL);
 	if (load_images(game) < 0)
@@ -54,8 +54,6 @@ static int	load_images(t_game *game)
 	if (load_anim("./sprites/drop_bonus.png", game->mlx, &game->enemy) < 0)
 		return (-1);
 	if (load_anim("./sprites/candle_bonus.png", game->mlx, &game->collect) < 0)
-		return (-1);
-	if (load_anim("./sprites/drop_bonus.png", game->mlx, &game->enemy) < 0)
 		return (-1);
 	return (0);
 }

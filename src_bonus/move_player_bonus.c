@@ -59,6 +59,9 @@ static void	update_moves(t_game *game)
 	game->movecounter->enabled = 0;
 	mlx_delete_image(game->mlx, game->movecounter);
 	game->movecounter = mlx_put_string(game->mlx, str, 8, 2);
+	free(str);
+	if (!game->movecounter)
+		error_close_game(game, NULL);
 }
 
 static void	collect(t_game *game, t_coord *coord)

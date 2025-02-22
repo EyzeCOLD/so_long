@@ -12,8 +12,8 @@
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
-# define MAX_H 30
-# define MAX_W 40
+# define MAX_H 67
+# define MAX_W 120
 # define VALID_CHARS "01CEP\n"
 # include <stdlib.h>
 # include "../MLX42/include/MLX42/MLX42.h"
