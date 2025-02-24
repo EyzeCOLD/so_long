@@ -23,7 +23,6 @@ static void	validate_filename(char *file);
 void	init_map(char *file, t_map *map)
 {
 	validate_filename(file);
-	map->name = file;
 	load_map(file, map);
 	get_map_dimensions(map);
 	validate_map(map);

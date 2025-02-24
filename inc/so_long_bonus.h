@@ -28,7 +28,6 @@ typedef struct s_coord
 
 typedef struct s_map
 {
-	char	*name;
 	char	**grid;
 	t_coord	p_pos;
 	size_t	w;
@@ -39,7 +38,6 @@ typedef struct s_map
 
 typedef struct s_anim
 {
-	int			enabled;
 	mlx_t		*mlx;
 	mlx_image_t	**frames;
 	size_t		frame_count;

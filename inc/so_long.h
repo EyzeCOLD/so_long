@@ -26,7 +26,6 @@ typedef struct s_coord
 
 typedef struct s_map
 {
-	char	*name;
 	char	**grid;
 	t_coord	p_pos;
 	size_t	w;

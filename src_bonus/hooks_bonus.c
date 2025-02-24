@@ -45,11 +45,9 @@ void	animation_hook(void *param)
 	t_game	*game;
 
 	game = param;
-	if (game->player->enabled)
-		update_animation(game->player, game->mlx);
-	if (game->collect->enabled)
-		update_animation(game->collect, game->mlx);
-	if (game->enemy->enabled)
+	update_animation(game->player, game->mlx);
+	update_animation(game->collect, game->mlx);
+	if (game->enemy->frames[0]->count)
 		update_animation(game->enemy, game->mlx);
 }
 
@@ -64,7 +62,7 @@ void	enemy_hook(void *param)
 static inline void	update_animation(t_anim *anim, mlx_t *mlx)
 {
 	anim->accumulator += mlx->delta_time;
-	if (anim->accumulator >= FRAME_TIME)
+	while (anim->accumulator >= FRAME_TIME)
 	{
 		anim->frames[anim->frame_index]->enabled = 0;
 		anim->frame_index = (anim->frame_index + 1) % anim->frame_count;

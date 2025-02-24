@@ -94,7 +94,6 @@ static t_anim	*new_anim(size_t frame_count, mlx_t *mlx)
 	anim->frame_count = frame_count;
 	anim->frame_index = 0;
 	anim->accumulator = 0;
-	anim->enabled = 1;
 	return (anim);
 }
 
